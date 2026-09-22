@@ -21,6 +21,36 @@
   <meta name="twitter:description" content="1BR Unit with 2 Queen Beds, PS4 Driving Sim, 55″ Smart TV, Cine Projector & Retro Arcade. Rates from ₱1,499.">
   <meta name="twitter:image" content="images/IMG_6180.jpg">
 
+  <!-- Resilient Image Fallback Script: Resolves images regardless of directory structure on GitHub Pages or local -->
+  <script>
+    (function() {
+      const RAW_GITHUB_BASE = 'https://raw.githubusercontent.com/gabrieljoshserrano06-beep/CozyGamingEscape/main/';
+      document.addEventListener('error', function(e) {
+        if (e.target && e.target.tagName === 'IMG') {
+          const img = e.target;
+          let step = parseInt(img.getAttribute('data-fallback-step') || '0', 10);
+          const currentSrc = img.getAttribute('src') || '';
+          const filename = currentSrc.split('/').pop().split('?')[0];
+          if (!filename) return;
+
+          if (step === 0) {
+            // Step 1: If it failed from 'images/FILENAME', try directly in root './FILENAME'
+            img.setAttribute('data-fallback-step', '1');
+            img.src = './' + filename;
+          } else if (step === 1) {
+            // Step 2: If root failed, try 'images/FILENAME'
+            img.setAttribute('data-fallback-step', '2');
+            img.src = 'images/' + filename;
+          } else if (step === 2) {
+            // Step 3: Direct raw GitHub CDN URL (guaranteed 200 OK from the repo)
+            img.setAttribute('data-fallback-step', '3');
+            img.src = RAW_GITHUB_BASE + filename;
+          }
+        }
+      }, true);
+    })();
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -2281,6 +2311,7 @@
       if (heroMainImg) {
         heroMainImg.style.opacity = '0.35';
         setTimeout(() => {
+          heroMainImg.removeAttribute('data-fallback-step');
           heroMainImg.src = src;
           heroMainImg.style.opacity = '1';
         }, 120);
@@ -2307,6 +2338,7 @@
       const modal = document.getElementById('lightboxModal');
       const img = document.getElementById('lightboxImg');
       const cap = document.getElementById('lightboxCaption');
+      img.removeAttribute('data-fallback-step');
       img.src = src;
       cap.innerText = caption || '';
       modal.classList.add('active');
